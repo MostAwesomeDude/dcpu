@@ -1,0 +1,33 @@
+( Core words from ANS Forth. )
+( Copyright (c) 2012 Corbin Simpson )
+( Available under the MIT/X11 license. Ask for details. )
+
+: */ ( n d m -- n' ) -rot * swap / ;
+: /mod ( n d -- n' m ) 2dup mod -rot / ;
+: 1+ ( n -- n' ) 1 + ;
+: 1- ( n -- n' ) 1 - ;
+
+: octal ( n -- ) 8 base ! ;
+: decimal ( n -- ) 10 base ! ;
+: hex ( n -- ) 16 base ! ;
+
+: cells ( n -- n ) ;
+: allot ( n -- ) here +! ;
+
+: constant ( x "<spaces>name" -- )
+    word create
+    docol , ' lit ,
+    , \ Write the constant to the thread.
+    ' exit ,
+;
+: variable ( "<spaces>name" -- )
+    1 allot         \ We don't need to use cells, so we don't.
+    here            \ Get here on the stack.
+    word create
+    docol , ' lit ,
+    ,               \ Write here, the allocated location, onto the thread.
+    ' exit ,
+;
+
+\ All done, leaving now.
+here dump-core bye

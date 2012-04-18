@@ -52,6 +52,10 @@ goforth.img: goforth.ft disasm.ft out/boot.img dcpu
 	cat disasm.ft | ./dcpu -k 10000 core.img > /dev/null
 	mv core.img $@
 
+full.img: core.ft goforth.img dcpu
+	cat core.ft | ./dcpu -k 10000 goforth.img > /dev/null
+	mv core.img $@
+
 clean:
 	-rm -f $(ALL_T) $(ALL_O)
 	-rm -f out/boot.img
