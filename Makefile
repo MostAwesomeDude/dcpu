@@ -52,8 +52,12 @@ goforth.img: goforth.ft disasm.ft out/boot.img dcpu
 	cat disasm.ft | ./dcpu -k 10000 core.img > /dev/null
 	mv core.img $@
 
-full.img: core.ft goforth.img dcpu
-	cat core.ft | ./dcpu -k 10000 goforth.img > /dev/null
+ans.img: ans.ft goforth.img dcpu
+	cat ans.ft | ./dcpu -k 10000 goforth.img > /dev/null
+	mv core.img $@
+
+full.img: comus.ft ans.img dcpu
+	cat comus.ft | ./dcpu -k 10000 ans.img > /dev/null
 	mv core.img $@
 
 clean:

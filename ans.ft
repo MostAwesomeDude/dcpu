@@ -1,5 +1,5 @@
 ( Core words from ANS Forth. )
-( Copyright (c) 2012 Corbin Simpson )
+( Copyright 2012 Corbin Simpson )
 ( Available under the MIT/X11 license. Ask for details. )
 
 : */ ( n d m -- n' ) -rot * swap / ;

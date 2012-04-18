@@ -1,0 +1,24 @@
+( Comus: Common Forth words not in ANS. )
+( Copyright 2012 Corbin Simpson )
+( Available under the MIT/X11 license. Ask for details. )
+
+: noop ;
+
+: 2+ ( n -- n' ) 2 + ;
+: 2- ( n -- n' ) 2 - ;
+
+: @+ ( addr -- addr' x ) dup 1+ swap @ ;
+: !+ ( addr x -- addr' ) over ! 1+ ;
+: c@+ ( addr -- addr' c ) @+ ;
+: c!+ ( addr c -- addr' ) !+ ;
+
+: cell ( -- n ) 1 ;
+: cell- ( addr -- addr' ) 1- ;
+
+: on ( addr -- ) true swap ! ;
+: off ( addr -- ) false swap ! ;
+
+: under+ ( n x m -- n' x ) rot + swap ;
+
+\ All done, leaving now.
+here dump-core bye
