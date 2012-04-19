@@ -6,27 +6,54 @@
 : /mod ( n d -- n' m ) 2dup mod -rot / ;
 : 1+ ( n -- n' ) 1 + ;
 : 1- ( n -- n' ) 1 - ;
+: 0> ( n -- b ) 0 > ;
 
 : octal ( n -- ) 8 base ! ;
 : decimal ( n -- ) 10 base ! ;
 : hex ( n -- ) 16 base ! ;
 
+: aligned ( addr -- addr ) ;
 : cells ( n -- n ) ;
-: allot ( n -- ) here +! ;
+: align ( -- ) ;
 
 : constant ( x "<spaces>name" -- )
-    word create
-    docol , ' lit ,
+    create
+    docol ,
+    ' lit ,
     , \ Write the constant to the thread.
     ' exit ,
 ;
 : variable ( "<spaces>name" -- )
     1 allot         \ We don't need to use cells, so we don't.
     here            \ Get here on the stack.
-    word create
-    docol , ' lit ,
+    create
+    docol ,
+    ' lit ,
     ,               \ Write here, the allocated location, onto the thread.
     ' exit ,
+;
+
+\ XXX literal mask
+: id. ( addr -- )
+    1+ dup @ 31 and
+    begin dup 0>
+    while swap 1+ dup @ emit swap 1-
+    repeat
+    2drop
+;
+
+\ XXX literal mask
+: ?hidden ( addr -- b ) 1+ @ 32 and ;
+: ?immediate ( addr -- b ) 1+ @ 128 and ;
+
+: words ( -- )
+    latest @
+    begin dup 0<>
+    while dup ?hidden not
+        if dup id. then
+    space @
+    repeat
+    drop cr
 ;
 
 \ All done, leaving now.
