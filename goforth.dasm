@@ -552,6 +552,14 @@ dhend_:     ; just in case the jsr is 2 words...
 zequ.1:     set [z], 0xffff
             next
 
+            defcode(0<>, 0, znequ)
+            ifn [z], 0
+            set pc, zequ.1
+            set [z], 0
+            next
+znequ.1:    set [z], 0xffff
+            next
+
             ; TODO more...
 
 ; internals, execution
