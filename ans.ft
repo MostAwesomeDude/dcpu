@@ -8,9 +8,8 @@
 : 1- ( n -- n' ) 1 - ;
 : 0> ( n -- b ) 0 > ;
 
+( decimal and hex are in the goforth core. )
 : octal ( n -- ) 8 base ! ;
-: decimal ( n -- ) 10 base ! ;
-: hex ( n -- ) 16 base ! ;
 
 : aligned ( addr -- addr ) ;
 : cells ( n -- n ) ;
