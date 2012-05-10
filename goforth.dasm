@@ -718,6 +718,25 @@ zbranch.1:  add z, 1                ; pop
             dbg 0                   ; enter emulator debugger
             next
 
+            defcode(hwn, 0, hwncode)
+            sub z, 1                ; make room on stack
+            hwn [z]                 ; perform the HWN
+            next
+
+            defcode(hwq, 0, hwqcode)
+            set push, x             ; spill X and Y
+            set push, y
+            hwq [z]                 ; make the query
+            sub z, 4                ; make room on the stack
+            set [z], a              ; and spill the info to the stack
+            set [1+z], b
+            set [2+z], c
+            set [3+z], x
+            set [4+z], y
+            set y, pop              ; unspill Y and X
+            set x, pop
+            next
+
 
             ; polls for a keypress. returns key in c.
             ; polling seems stupid, but there's no low-power mode
