@@ -50,10 +50,11 @@ out/boot.img: forth/goforth.dasm masm
 	m4 $< > out/goforth.s
 	./masm out/goforth.s $@
 
-goforth.img: forth/goforth.ft forth/asm.ft forth/disasm.ft out/boot.img dcpu
+goforth.img: forth/goforth.ft forth/asm.ft forth/disasm.ft forth/hw.ft out/boot.img dcpu
 	cat forth/goforth.ft | ./dcpu -k 10000 out/boot.img > /dev/null
 	cat forth/asm.ft | ./dcpu -k 10000 core.img > /dev/null
 	cat forth/disasm.ft | ./dcpu -k 10000 core.img > /dev/null
+	cat forth/hw.ft | ./dcpu -k 10000 core.img > /dev/null
 	mv core.img $@
 
 clean:

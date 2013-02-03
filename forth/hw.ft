@@ -1,0 +1,19 @@
+\ Copyright (C) 2013 Corbin Simpson
+
+\ Some words to help find and utilize hardware.
+
+\ Get the hardware ID for a given hardware index.
+: >hid ( u -- u u ) hwq >r >r 2drop drop r> r> ;
+
+\ Compare two words with the two words beneath them, returning true or false
+\ on match. Both pairs must match.
+: 2= ( x y x y -- b ) swap >r = swap r> = and ;
+
+\ Find the index which holds a given HID, or -1 if it's not found.
+\ This is reversed from normal truthiness, since 0 can be a valid index.
+: hid>? ( u u -- u ) hwn 0
+    do 2dup i >hid 2= if 2drop i unloop exit then loop 2drop -1 ;
+
+\ And we're done here. Thanks!
+here dump-core
+bye
