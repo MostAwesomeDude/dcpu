@@ -369,6 +369,33 @@ dhend_:     ; just in case the jsr is 2 words...
             set [z], [1+z]
             next
 
+; Hardware queries.
+
+            defcode(hwn, 0, counthw)
+            sub z, 1
+            hwn [z]
+            next
+
+            defcode(hwq, 0, hwinfo)
+            pushrsp(a)
+            pushrsp(b)
+            pushrsp(c)
+            pushrsp(x)
+            pushrsp(y)
+            hwq [z]
+            sub z, 4
+            set [4+z], y
+            set [3+z], x
+            set [2+z], c
+            set [1+z], b
+            set [z], a
+            poprsp(y)
+            poprsp(x)
+            poprsp(c)
+            poprsp(b)
+            poprsp(a)
+            next
+
 ; basic arithmetic
             defcode(+, 0, plus)
             add [1+z], [z]
