@@ -1,0 +1,23 @@
+\ Short benchmarking that abuses both the threading and the primitives.
+
+\ I used Ackermann, because I like it.
+\ This version is from Rosetta Code.
+: ack ( m n -- u )
+    over unless nip 1+ exit then \ When m = 0, return n + 1
+    swap 1- swap \ Decrement m
+    dup unless 1+ recurse exit then \ When n = 0, recurse with m - 1
+    1- over 1+ swap recurse recurse ; \ Otherwise, adjust and recurse
+
+: run-ack ( m n -- res u ) clock? dup -1 = if ." No clock! " exit then
+    >r r@ 1 start-clock
+    ack
+    r@ check-clock rdrop ;
+
+: display-ack ( m n -- ) cr ." : " 2dup swap u. u. ." ... "
+    run-ack u. ." ticks: " u. ;
+
+: bench-ack ( -- ) 4 0 do i 4 display-ack loop ;
+
+\ And we're done here. Thanks!
+here dump-core
+bye

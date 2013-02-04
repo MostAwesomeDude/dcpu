@@ -14,6 +14,34 @@
 : hid>? ( u u -- u ) hwn 0
     do 2dup i >hid 2= if 2drop i unloop exit then loop 2drop -1 ;
 
+\ Find a SPED-3, or -1 if none is attached.
+: sped-3? ( -- u ) 0x 42ba 0x bf3c hid>? ;
+
+\ Find a clock, or -1 if none is attached.
+: clock? ( -- u) 0x 12d0 0x b402 hid>? ;
+
+\ Get the contents of C onto the stack.
+:code Cr> ( -- u ) 1 l, Zr sub, Cr [Zr] set, next;
+
+\ Pop the stack onto A.
+:code >Ar ( u -- ) [Zr] Ar set, 1 l, Zr add, next;
+
+\ Pop the stack onto B.
+:code >Br ( u -- ) [Zr] Br set, 1 l, Zr add, next;
+
+\ Issue an HWI to a given device.
+\ Caller is responsible for setting registers in advance.
+:code hwi ( u -- ) [Zr] hwi, 1 l, Zr add, next;
+
+\ Reset a clock, setting the fractional divider to whatever's on the stack.
+: start-clock ( hid u -- ) >Br 0 >Ar hwi ;
+
+\ Stop a clock.
+: stop-clock ( hid -- ) 0 start-clock ; \ Cheating a bit!
+
+\ Get the number of ticks in the clock.
+: check-clock ( hid -- u ) 1 >Ar hwi Cr> ;
+
 \ And we're done here. Thanks!
 here dump-core
 bye
