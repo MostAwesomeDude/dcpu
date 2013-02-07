@@ -754,6 +754,8 @@ readkey:    set push, a             ; save
 readkey.1:  hwi [kbd]               ; do the interrupt
             ife c, 0                ; no key yet...
             set pc, readkey.1
+            ifg c, 0x7f             ; Non-printable char...
+            set pc, readkey.1
             set a, pop              ; restore
             set pc, pop
 
