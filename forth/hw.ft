@@ -17,6 +17,9 @@
 \ Find a SPED-3, or -1 if none is attached.
 : sped-3? ( -- u ) 0x 42ba 0x bf3c hid>? ;
 
+\ Allocate space for vertices.
+: allot-verts ( u -- addr ) 2* dup allot here swap - ;
+
 \ Find a clock, or -1 if none is attached.
 : clock? ( -- u) 0x 12d0 0x b402 hid>? ;
 
