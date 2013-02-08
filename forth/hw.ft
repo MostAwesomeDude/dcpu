@@ -35,6 +35,20 @@
     Ir Xr set,
     next;
 
+\ Rotate the SPED-3.
+:code rot-sped-3 ( hid u -- )
+    2 l, Ar set,
+    Xr Ir set,
+    [Zr] Xr set,
+    1 [+Zr] Br set,
+    2 l, Zr add,
+    Br hwi,
+    Ir Xr set,
+    next;
+
+\ Spin the SPED-3 forever.
+: spin-sped-3 ( hid -- ) 0 begin 1+ 360 mod 2dup rot-sped-3 again ;
+
 : vert+ ( addr -- addr ) 2 + ;
 : >vert ( addr xy cz -- ) >r over ! r> swap 1+ ! ;
 : pack-vert ( x y z -- xy cz ) >r swap 8 lshift or r> ;
