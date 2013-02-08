@@ -20,6 +20,41 @@
 \ Allocate space for vertices.
 : allot-verts ( u -- addr ) 2* dup allot here swap - ;
 
+\ Map vertices onto a SPED-3.
+\ This is tricky because we need to use X and Y.
+:code map-verts ( hid u addr -- )
+    1 l, Ar set,
+    Xr Ir set,
+    Yr Jr set,
+    [Zr] Xr set,
+    1 [+Zr] Yr set,
+    2 [+Zr] Br set,
+    3 l, Zr add,
+    Br hwi,
+    Jr Yr set,
+    Ir Xr set,
+    next;
+
+: vert+ ( addr -- addr ) 2 + ;
+: >vert ( addr xy cz -- ) >r over ! r> swap 1+ ! ;
+: pack-vert ( x y z -- xy cz ) >r swap 8 lshift or r> ;
+: color-vert ( cz color -- cz ) swap 0x 0700 and or ;
+: red-vert ( cz -- cz ) 0x 0500 color-vert ;
+: green-vert ( cz -- cz ) 0x 0600 color-vert ;
+: blue-vert ( cz -- cz ) 0x 0700 color-vert ;
+
+: pack-cube ( addr -- )
+    dup 0   0   0   pack-vert red-vert >vert vert+
+    dup 255 0   0   pack-vert red-vert >vert vert+
+    dup 255 255 0   pack-vert red-vert >vert vert+
+    dup 0   255 0   pack-vert red-vert >vert vert+
+    dup 0   255 255 pack-vert red-vert >vert vert+
+    dup 0   0   255 pack-vert red-vert >vert vert+
+    dup 255 0   255 pack-vert red-vert >vert vert+
+    dup 255 255 255 pack-vert red-vert >vert ;
+
+: map-cube ( -- ) sped-3? 8 dup allot-verts dup pack-cube map-verts ;
+
 \ Find a clock, or -1 if none is attached.
 : clock? ( -- u) 0x 12d0 0x b402 hid>? ;
 
